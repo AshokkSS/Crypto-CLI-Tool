@@ -12,3 +12,5 @@ gem "tty-progressbar"
 gem 'uri'
 gem 'net-http'
 gem 'json'
+gem 'colorize'
+
