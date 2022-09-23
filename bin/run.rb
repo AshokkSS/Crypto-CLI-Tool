@@ -20,26 +20,9 @@ while !quit
         puts CLEAR
             while !option_quit
                 show_logo
-                puts "Here you can enter the name of the Crypto you would like to price check: (Example: Bitcoin)"
-                crypto_input = gets.chomp
-                puts "Here you can enter the fiat currency you would like to use: (Example: GBP)"
-                fiat_input = gets.chomp
-                fiat_input = "gbp" if fiat_input.empty?
-                supported_currency = "https://api.coingecko.com/api/v3/simple/supported_vs_currencies"
-                uri = URI(supported_currency)
-                res = Net::HTTP.get_response(uri)
-                parsed_json = JSON.parse(res.body)
-                if parsed_json.include? fiat_input
-                    puts "Valid fiat input." 
-                else 
-                    puts "Invalid fiat input. Here is a list of valid Currencies you can input #{parsed_json}"
-                end
-                url = "https://api.coingecko.com/api/v3/simple/price?ids="
-                url << "#{crypto_input}&vs_currencies=#{fiat_input}&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true"
-                uri = URI(url)
-                res = Net::HTTP.get_response(uri)
-                parsed_json = JSON.parse(res.body)
-                puts res.body
+                crypto_input = get_crypto_input
+                fiat_input = get_fiat_input
+                get_crypto_price(crypto_input, fiat_input)
                 option_result = prompt.select("Please select an option below.", exit_options, filter: true)
                 case option_result
                 when "Input_Another"
