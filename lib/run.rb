@@ -1,6 +1,7 @@
 require_relative '../config/environment'
 CLEAR = "\e[H\e[2J"
-
+def red;            "\e[31m#{self}\e[0m" end
+def green;          "\e[32m#{self}\e[0m" end
 def loading_menu
     puts CLEAR
     bar = TTY::ProgressBar.new("Connecting to API [:bar]", total: 10)
@@ -35,7 +36,7 @@ end
 
 def get_crypto_input 
     puts "Here you can enter the name of the Crypto you would like to price check: (Example: Bitcoin)"
-    crypto_input = gets.chomp
+    crypto_input = gets.chomp.downcase
     uri = URI('https://api.coingecko.com/api/v3/coins/list')
     res = Net::HTTP.get_response(uri)
     parsed_json = JSON.parse(res.body)
@@ -43,19 +44,19 @@ def get_crypto_input
     parsed_json.each do |hash|
         results << hash["id"]
     end
-    puts "Invalid fiat input. Here is a list of valid Currencies you can input " unless results.include? crypto_input
+    puts "Invalid Crypto input. Please follow the format shown. (Example: bitcoin)" unless results.include? crypto_input
     return crypto_input
 end
 
 def get_fiat_input
     puts "Here you can enter the fiat currency you would like to use: (Example: GBP)"
-    fiat_input = gets.chomp
+    fiat_input = gets.chomp.downcase
     fiat_input = "gbp" if fiat_input.empty?
     supported_currency = "https://api.coingecko.com/api/v3/simple/supported_vs_currencies"
     uri = URI(supported_currency)
     res = Net::HTTP.get_response(uri)
     parsed_json = JSON.parse(res.body)
-    puts "Invalid fiat input. Here is a list of valid Currencies you can input #{parsed_json}" unless parsed_json.include? fiat_input
+    puts "Invalid fiat input. Please follow the format shown. (Example: usd)" unless parsed_json.include? fiat_input
     return fiat_input
 end
 
@@ -65,5 +66,21 @@ def get_crypto_price (crypto_input, fiat_input)
     uri = URI(url)
     res = Net::HTTP.get_response(uri)
     parsed_json = JSON.parse(res.body)
-    puts res.body
+    fiat_price = parsed_json [crypto_input][fiat_input]
+    #fiat_price << " #{fiat_input}"
+    mcap = parsed_json [crypto_input]["#{fiat_input}_market_cap"].to_s
+   # mcap << " #{fiat_input}"
+    hr_vol = parsed_json [crypto_input]["#{fiat_input}_24h_vol"].to_s
+   # hr_vol << " #{fiat_input}"
+    hr_change = parsed_json [crypto_input]["#{fiat_input}_24h_change"]
+    if hr_change.positive?() == true
+        hr_change = "+#{hr_change}%".to_s.green
+    else
+        hr_change = "#{hr_change}%".to_s.red
+    end
+    puts "Showing Live stats for: #{(crypto_input).upcase} in #{(fiat_input).upcase}"
+    table = TTY::Table.new(["Price","Market Cap","24 Hours Volume"," 24 Hours Change"], [[fiat_price, mcap, hr_vol, hr_change]])
+    puts table.render(:unicode,padding: [1,2,1,2])
+
+
 end
