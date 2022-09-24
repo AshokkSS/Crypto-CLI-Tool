@@ -20,15 +20,11 @@ while !quit
         puts CLEAR
             while !option_quit
                 show_logo
-                loop_quit = nil
-                while !loop_quit
-                    crypto_input = get_crypto_input
-                    fiat_input = get_fiat_input
-                    puts CLEAR
-                    show_logo
-                    get_crypto_price(crypto_input, fiat_input)
-                    loop_quit = true
-                end
+                crypto_input = get_crypto_input
+                fiat_input = get_fiat_input
+                puts CLEAR
+                show_logo
+                get_crypto_price(crypto_input, fiat_input)
                 option_result = prompt.select("Please select an option below.", exit_options, filter: true)
                 case option_result
                 when "Input_Another"
