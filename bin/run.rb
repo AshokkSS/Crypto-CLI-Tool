@@ -32,36 +32,8 @@ while !quit
                 end
             end
     when "Compare_Cryptos"
-        option_quit = nil
-        puts CLEAR
-            while !option_quit
-                show_logo
-                puts "Welcome to Compare Cryptos"
-                option_result = prompt.select("Please select an option below.", exit_options, filter: true)
-                case option_result
-                when "Input_Another"
-                    puts CLEAR
-                when "Close"
-                    option_quit = true
-                    puts CLEAR
-                    show_logo
-                end
-            end
+        puts "Welcome to Compare Cryptos"
     when "My_Portfolio"
-        option_quit = nil
-        puts CLEAR
-            while !option_quit
-                show_logo
-                puts "Welcome to My Portfolio"
-                option_result = prompt.select("Please select an option below.", exit_options, filter: true)
-                case option_result
-                when "Input_Another"
-                    puts CLEAR
-                when "Close"
-                    option_quit = true
-                    puts CLEAR
-                    show_logo
-                end
-            end
+        puts "Welcome to My Portfolio"
     end
 end
