@@ -1,11 +1,10 @@
 require_relative '../config/environment'
-CLEAR = "\e[H\e[2J"
-PROMPT = TTY::Prompt.new
-OPTIONS =  %w(Price_Check Compare_Cryptos My_Portfolio Close)
-PING_URL = "https://api.coingecko.com/api/v3/ping"
+
 
 class Main_Menu
-
+    CLEAR = "\e[H\e[2J"
+    PROMPT = TTY::Prompt.new
+    OPTIONS =  %w(Price_Check Compare_Cryptos My_Portfolio Close)
     def show_logo
         puts "
         ░█████╗░██████╗░██╗░░░██╗██████╗░████████╗░█████╗░  ░█████╗░██╗░░░░░██╗  ████████╗░█████╗░░█████╗░██╗░░░░░
@@ -44,10 +43,24 @@ class Main_Menu
 
     def loading_menu
         puts CLEAR
-        ping_api
+        Crypto_API.new.ping_api
         
     end
     
+    
+    
+    def display_main_menu
+        $result = PROMPT.select("Please select an option below.", OPTIONS)
+        get_user_input
+    end
+
+
+
+end
+
+class Crypto_API
+    PING_URL = "https://api.coingecko.com/api/v3/ping"
+    CLEAR = "\e[H\e[2J"
     def ping_api
         uri = URI(PING_URL)
         res = Net::HTTP.get_response(uri)
@@ -71,24 +84,7 @@ class Main_Menu
         sleep 2
         puts CLEAR
     end    
-    
-    def display_main_menu
-        $result = PROMPT.select("Please select an option below.", OPTIONS)
-        get_user_input
-    end
-
-
-
 end
-
-# def capture_stdout(&blk)
-#     old = $stdout
-#     $stdout = fake = StringIO.new
-#     blk.call
-#     fake.string
-#   ensure
-#     $stdout = old
-#   end
 
 
 
