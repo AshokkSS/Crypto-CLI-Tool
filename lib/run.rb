@@ -85,13 +85,3 @@ class Crypto_API
         puts CLEAR
     end    
 end
-
-
-
-
-
-
-
-
-
-
