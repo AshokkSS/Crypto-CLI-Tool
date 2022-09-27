@@ -4,13 +4,21 @@ require_relative '../config/environment'
 
 
 
-describe "#display_main_menu" do
+describe "#loading_menu" do
   # expect{display_main_menu}.to eq('my message').to_stdout
-  printed = capture_stdout do
-      display_main_menu
-    end
+  # printed = capture_stdout do
+  #     display_main_menu
+  #   end
     it 'displays menu options' do
-      expect(printed).to include("my message")
+      #test_prompt = TTY::Prompt.new
+      
+      ping 
+        #expect(PROMPT).to receive(:select).with(%w(Price_Check Compare_Cryptos My_Portfolio Close))
+      expect(Net::HTTPSuccess).to receive(ping).and_return("correct")
+
+      
+    
+      
   end
 end
 # context "#display_main_menu" do

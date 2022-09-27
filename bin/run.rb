@@ -1,6 +1,10 @@
 require_relative '../config/environment'
 require_relative '../lib/run'
 
-#startup
-# output = capture_stdout { display_main_menu }
-# puts output
+menu = Main_Menu.new
+menu.startup
+while !$quit
+    menu.display_main_menu
+end
+# loading_menu
+#display_main_menu
