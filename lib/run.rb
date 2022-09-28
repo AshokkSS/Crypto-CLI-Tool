@@ -1,10 +1,12 @@
 require_relative '../config/environment'
+require_relative './api'
 
 
 class Main_Menu
     CLEAR = "\e[H\e[2J"
     PROMPT = TTY::Prompt.new
     OPTIONS =  %w(Price_Check Compare_Cryptos My_Portfolio Close)
+    CRYPTOAPI = Crypto_API.new
     def show_logo
         puts "
         ░█████╗░██████╗░██╗░░░██╗██████╗░████████╗░█████╗░  ░█████╗░██╗░░░░░██╗  ████████╗░█████╗░░█████╗░██╗░░░░░
@@ -43,7 +45,7 @@ class Main_Menu
 
     def loading_menu
         puts CLEAR
-        Crypto_API.new.ping_api
+        CRYPTOAPI.ping_api
         
     end
     
@@ -58,30 +60,3 @@ class Main_Menu
 
 end
 
-class Crypto_API
-    PING_URL = "https://api.coingecko.com/api/v3/ping"
-    CLEAR = "\e[H\e[2J"
-    def ping_api
-        uri = URI(PING_URL)
-        res = Net::HTTP.get_response(uri)
-        if res.is_a?(Net::HTTPSuccess)
-            connected_box_success
-        else
-            connected_box_failure
-        end
-    end
-
-    def connected_box_success
-        box = TTY::Box.success("Connected to API")
-        print box
-        sleep 2
-        puts CLEAR
-    end
-
-    def connected_box_failure
-        box = TTY::Box.error("Unable to connect to API, Please close and reopen.")
-        print box
-        sleep 2
-        puts CLEAR
-    end    
-end
