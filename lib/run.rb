@@ -29,7 +29,7 @@ class Main_Menu
         
     end
 
-    def get_user_input
+    def get_user_input(result)
         case $result
         when "Close"
             puts CLEAR
@@ -46,17 +46,12 @@ class Main_Menu
     def loading_menu
         puts CLEAR
         CRYPTOAPI.ping_api
-        
     end
     
     
     
     def display_main_menu
         $result = PROMPT.select("Please select an option below.", OPTIONS)
-        get_user_input
+        get_user_input($result)
     end
-
-
-
 end
-
