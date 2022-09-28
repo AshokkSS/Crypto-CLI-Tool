@@ -1,12 +1,12 @@
 require_relative '../config/environment'
-require_relative './api'
+require_relative './models/Crypto_Api.rb'
 
 
 class Main_Menu
     CLEAR = "\e[H\e[2J"
     PROMPT = TTY::Prompt.new
     OPTIONS =  %w(Price_Check Compare_Cryptos My_Portfolio Close)
-    CRYPTOAPI = Crypto_API.new
+    CRYPTOAPI = CryptoAPI.new
     def show_logo
         puts "
         ░█████╗░██████╗░██╗░░░██╗██████╗░████████╗░█████╗░  ░█████╗░██╗░░░░░██╗  ████████╗░█████╗░░█████╗░██╗░░░░░
