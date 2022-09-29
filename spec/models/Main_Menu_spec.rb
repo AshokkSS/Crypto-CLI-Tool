@@ -14,5 +14,9 @@ RSpec.describe MainMenu do
         it 'on user input "My_Portfolio" should display "Welcome to My Portfolio!"' do
             expect{main_menu.get_user_input('My_Portfolio')}.to output(/Welcome to My Portfolio!/).to_stdout
         end
+        it 'on user input "Close" main menu quit loop should be true' do
+            main_menu.get_user_input('Close')
+            expect(main_menu.quit_loop).to eq(true)
+        end
     end
 end

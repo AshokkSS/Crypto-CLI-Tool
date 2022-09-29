@@ -3,6 +3,6 @@ require_relative '../lib/models/Main_Menu.rb'
 
 menu = MainMenu.new
 menu.startup
-while !$quit
+while !menu.quit_loop
     menu.display_main_menu
 end

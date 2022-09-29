@@ -6,6 +6,7 @@ require_relative './My_Portfolio.rb'
 
 
 class MainMenu
+    attr_reader :quit_loop
     CLEAR = "\e[H\e[2J"
     PROMPT = TTY::Prompt.new
     OPTIONS =  %w(Price_Check Compare_Cryptos My_Portfolio Close)
@@ -30,7 +31,7 @@ class MainMenu
 
     def startup
         loading_menu
-        $quit = nil
+        @quit_loop = nil
         show_logo
     end
 
@@ -38,7 +39,7 @@ class MainMenu
         case result
         when "Close"
             puts CLEAR
-            $quit = true
+            @quit_loop = true
         when "Price_Check"
             PRICECHECK.welcome_user
         when "Compare_Cryptos"
