@@ -1,5 +1,8 @@
 require_relative '../../config/environment'
 require_relative './Crypto_Api.rb'
+require_relative './Price_Check.rb'
+require_relative './Compare_Crypto.rb'
+require_relative './My_Portfolio.rb'
 
 
 class Main_Menu
@@ -7,6 +10,9 @@ class Main_Menu
     PROMPT = TTY::Prompt.new
     OPTIONS =  %w(Price_Check Compare_Cryptos My_Portfolio Close)
     CRYPTOAPI = CryptoAPI.new
+    PRICECHECK = PriceCheck.new
+    COMPARECRYPTO = CompareCrypto.new
+    MYPORTFOLIO = MyPortfolio.new
     def show_logo
         puts "
         ░█████╗░██████╗░██╗░░░██╗██████╗░████████╗░█████╗░  ░█████╗░██╗░░░░░██╗  ████████╗░█████╗░░█████╗░██╗░░░░░
@@ -34,11 +40,11 @@ class Main_Menu
             puts CLEAR
             $quit = true
         when "Price_Check"
-            puts "Welcome to Price Check"
+            PRICECHECK.get_user_input
         when "Compare_Cryptos"
-            puts "Welcome to Compare Cryptos"
+            COMPARECRYPTO.get_user_input
         when "My_Portfolio"
-            puts "Welcome to My Portfolio"
+            MYPORTFOLIO.get_user_input
         end
     end
 
