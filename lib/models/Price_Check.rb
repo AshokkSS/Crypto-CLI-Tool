@@ -1,6 +1,6 @@
-class PriceCheck
 
-    def get_user_input
+class PriceCheck
+    def welcome_user
         puts "Welcome to Price Check!"
     end
 

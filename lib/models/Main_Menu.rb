@@ -5,7 +5,7 @@ require_relative './Compare_Crypto.rb'
 require_relative './My_Portfolio.rb'
 
 
-class Main_Menu
+class MainMenu
     CLEAR = "\e[H\e[2J"
     PROMPT = TTY::Prompt.new
     OPTIONS =  %w(Price_Check Compare_Cryptos My_Portfolio Close)
@@ -40,11 +40,11 @@ class Main_Menu
             puts CLEAR
             $quit = true
         when "Price_Check"
-            PRICECHECK.get_user_input
+            PRICECHECK.welcome_user
         when "Compare_Cryptos"
-            COMPARECRYPTO.get_user_input
+            COMPARECRYPTO.welcome_user
         when "My_Portfolio"
-            MYPORTFOLIO.get_user_input
+            MYPORTFOLIO.welcome_user
         end
     end
 
