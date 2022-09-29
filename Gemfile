@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 source "https://rubygems.org"
 
 gem "sinatra-activerecord"
@@ -13,4 +12,3 @@ gem 'uri'
 gem 'net-http'
 gem 'json'
 gem 'colorize'
-
