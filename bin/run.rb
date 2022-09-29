@@ -1,5 +1,8 @@
 require_relative '../config/environment'
+require_relative '../lib/models/Main_Menu.rb'
 
-
-
-puts "HELLO WORLD"
+menu = Main_Menu.new
+menu.startup
+while !$quit
+    menu.display_main_menu
+end
