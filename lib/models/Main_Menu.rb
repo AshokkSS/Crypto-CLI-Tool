@@ -1,12 +1,19 @@
 require_relative '../../config/environment'
 require_relative './Crypto_Api.rb'
+require_relative './Price_Check.rb'
+require_relative './Compare_Crypto.rb'
+require_relative './My_Portfolio.rb'
 
 
-class Main_Menu
+class MainMenu
+    attr_reader :quit_loop
     CLEAR = "\e[H\e[2J"
     PROMPT = TTY::Prompt.new
     OPTIONS =  %w(Price_Check Compare_Cryptos My_Portfolio Close)
     CRYPTOAPI = CryptoAPI.new
+    PRICECHECK = PriceCheck.new
+    COMPARECRYPTO = CompareCrypto.new
+    MYPORTFOLIO = MyPortfolio.new
     def show_logo
         puts "
         ░█████╗░██████╗░██╗░░░██╗██████╗░████████╗░█████╗░  ░█████╗░██╗░░░░░██╗  ████████╗░█████╗░░█████╗░██╗░░░░░
@@ -24,7 +31,7 @@ class Main_Menu
 
     def startup
         loading_menu
-        $quit = nil
+        @quit_loop = nil
         show_logo
     end
 
@@ -32,15 +39,15 @@ class Main_Menu
         case result
         when "Close"
             puts CLEAR
-            $quit = true
+            @quit_loop = true
         when "Price_Check"
-            puts "Welcome to Price Check"
+            PRICECHECK.welcome_user
         when "Compare_Cryptos"
-            puts "Welcome to Compare Cryptos"
+            COMPARECRYPTO.welcome_user
         when "My_Portfolio"
-            puts "Welcome to My Portfolio"
+            MYPORTFOLIO.welcome_user
         end
-    end
+      end
 
     def loading_menu
         puts CLEAR
