@@ -35,7 +35,19 @@ class MainMenu
         show_logo
     end
 
-    
+    def get_user_input(result)
+        case result
+        when "Close"
+            puts CLEAR
+            @quit_loop = true
+        when "Price_Check"
+            PRICECHECK.welcome_user
+        when "Compare_Cryptos"
+            COMPARECRYPTO.welcome_user
+        when "My_Portfolio"
+            MYPORTFOLIO.welcome_user
+        end
+      end
 
     def loading_menu
         puts CLEAR
