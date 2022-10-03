@@ -26,7 +26,7 @@ RSpec.describe CryptoAPI do
                   "name": "01coin"
                 }]' } 
             crypto_api.get_valid_coins
-            expect(crypto_api.valid_coins).to include(match /01coin/)
+            expect(crypto_api.valid_coins).to include(match '01coin')
         end
     end
 end
