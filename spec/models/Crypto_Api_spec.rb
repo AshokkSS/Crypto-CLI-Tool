@@ -16,10 +16,17 @@ RSpec.describe CryptoAPI do
             crypto_api.ping_api
             expect(crypto_api.connection_status[:message]).to eq("Unable to connect to API, Please close and reopen.")
         end
-        it 'When get_valid_coins is run should set valid_coins with list of valid coins from api ' do
-            allow(Net::HTTP).to receive(:get_response).and_return(Net::HTTPSuccess.new(1.0,'200','OK'))
+        it 'On successful ping get_valid_coins should set valid_coins with list of valid coins from api filtered by id' do
+            response = Net::HTTPSuccess.new(1.0, '200', 'OK')
+            expect_any_instance_of(Net::HTTP).to receive(:request) { response }
+            expect(response).to receive(:body) { '[
+                {
+                  "id": "01coin",
+                  "symbol": "zoc",
+                  "name": "01coin"
+                }]' } 
             crypto_api.get_valid_coins
-            expect(crypto_api.valid_coins).to eq(results)
+            expect(crypto_api.valid_coins).to include(match /01coin/)
         end
     end
 end

@@ -27,7 +27,6 @@ class CryptoAPI
         parsed_json.each do |hash|
             @valid_coins << hash["id"]
         end
-        #puts @valid_coins
     end
 
     def get_valid_currencies
@@ -35,7 +34,6 @@ class CryptoAPI
         res = Net::HTTP.get_response(uri)
         @valid_currencies = JSON.parse(res.body) 
     end
-
 
     def show_connection_status
         ping_api 
