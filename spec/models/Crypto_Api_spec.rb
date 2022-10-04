@@ -16,7 +16,7 @@ RSpec.describe CryptoAPI do
             crypto_api.ping_api
             expect(crypto_api.connection_status[:message]).to eq("Unable to connect to API, Please close and reopen.")
         end
-        it 'On successful ping get_valid_coins should set valid_coins with list of valid coins from api filtered by id' do
+        it 'On successful ping get_valid_coins should set valid_coins with list of valid coins filtered by id' do
             response = Net::HTTPSuccess.new(1.0, '200', 'OK')
             expect_any_instance_of(Net::HTTP).to receive(:request) { response }
             expect(response).to receive(:body) { '[
@@ -26,7 +26,14 @@ RSpec.describe CryptoAPI do
                   "name": "01coin"
                 }]' } 
             crypto_api.get_valid_coins
-            expect(crypto_api.valid_coins).to include(match '01coin')
+            expect(crypto_api.valid_coins).to contain_exactly('01coin')
+        end
+        it 'On successful ping get_valid_currencies should set valid_currencies with list of valid currencies' do
+            response = Net::HTTPSuccess.new(1.0, '200', 'OK')
+            expect_any_instance_of(Net::HTTP).to receive(:request) { response }
+            expect(response).to receive(:body) { '["btc","eth","ltc"]' } 
+            crypto_api.get_valid_currencies
+            expect(crypto_api.valid_currencies).to contain_exactly('btc','eth','ltc')
         end
     end
 end
