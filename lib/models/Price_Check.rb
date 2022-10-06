@@ -22,19 +22,26 @@ class PriceCheck
             puts CLEAR
             MainMenu.new.show_logo
             CRYPTOAPI.get_crypto_price(crypto_input,fiat_input)
-            display_table(crypto_input,fiat_input)
+            CRYPTOAPI.get_historical_data(crypto_input,fiat_input)
+            calculate_historical_change(crypto_input,fiat_input)
         end
     end
 
-    def display_table(crypto_input, fiat_input)
+    def calculate_historical_change(crypto_input,fiat_input)
+        current_price = CRYPTOAPI.price_check_values[2]
+        price_change_14d = ((current_price-CRYPTOAPI.price_check_historical[0])/CRYPTOAPI.price_check_historical[0])*100
+        price_change_7d = ((current_price-CRYPTOAPI.price_check_historical[1])/CRYPTOAPI.price_check_historical[0])*100
+        display_table(crypto_input,fiat_input,price_change_7d,price_change_14d)
+    end
+
+    def display_table(crypto_input, fiat_input,price_change_7d,price_change_14d)
         values = CRYPTOAPI.price_check_values
+        historical_values = CRYPTOAPI.price_check_historical
         puts "Showing Live stats for: #{(crypto_input).upcase} in #{(fiat_input).upcase}"
-        if values[5].positive? == true
-            values [5] = "+#{values[5]}%".to_s.green
-        else
-            values [5] = "#{values[5]}%".to_s.red
-        end
-        price_check_table = TTY::Table.new(["Price","Market Cap","24 Hours Volume"," 24 Hours Change"], [[values[2],values[3],values[4],values[5]]])
+        values[5].positive? == true ? values [5] = "+#{values[5]}%".to_s.green : values [5] = "#{values[5]}%".to_s.red
+        price_change_7d.positive? == true ? price_change_7d = "+#{price_change_7d}%".to_s.green : price_change_7d = "#{price_change_7d}%".to_s.red
+        price_change_14d.positive? == true ? price_change_14d = "+#{price_change_14d}%".to_s.green : price_change_14d = "#{price_change_14d}%".to_s.red
+        price_check_table = TTY::Table.new(["Price","Market Cap","24 Hours Volume","Price 1D Ago"," 1 Day Change","Price 7D Ago","7 Day Change","Price 14D Ago", "14 Day Change"], [[values[2],values[3],values[4],historical_values[2],values[5],historical_values[1],price_change_7d,historical_values[0],price_change_14d]])
         puts price_check_table.render(:unicode,padding: [1,2,1,2])
         values[0].upcase!
         values[1].upcase!

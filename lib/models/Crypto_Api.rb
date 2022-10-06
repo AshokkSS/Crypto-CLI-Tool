@@ -4,11 +4,13 @@ class CryptoAPI
     attr_reader :valid_coins
     attr_reader :valid_currencies
     attr_reader :price_check_values
+    attr_reader :price_check_historical
     PING_URL = "https://api.coingecko.com/api/v3/ping"
     CRYPTO_PRICE_URL = "https://api.coingecko.com/api/v3/simple/price?ids="
     COIN_LIST_URL = 'https://api.coingecko.com/api/v3/coins/list'
     CURRENCY_LIST_URL = "https://api.coingecko.com/api/v3/simple/supported_vs_currencies"
     PRICE_CHECK_URL = "https://api.coingecko.com/api/v3/simple/price?ids="
+    HISTORICAL_DATA_URL = "https://api.coingecko.com/api/v3/coins/"
     CLEAR = "\e[H\e[2J"
 
     def ping_api
@@ -48,6 +50,18 @@ class CryptoAPI
         hr_vol = parsed_json [crypto_input]["#{fiat_input}_24h_vol"].to_s
         hr_change = parsed_json [crypto_input]["#{fiat_input}_24h_change"]
         @price_check_values = [crypto_input, fiat_input,fiat_price, mcap, hr_vol, hr_change]
+    end
+
+    def get_historical_data(crypto_input,fiat_input)
+        url = HISTORICAL_DATA_URL
+        url << "#{crypto_input}/market_chart?vs_currency=#{fiat_input}&days=14&interval=daily"
+        uri = URI(url)
+        res = Net::HTTP.get_response(uri)
+        parsed_json = JSON.parse(res.body)
+        price_14d_ago = parsed_json["prices"][0][1]
+        price_7d_ago = parsed_json["prices"][7][1]
+        price_1d_ago = parsed_json["prices"][13][1]
+        @price_check_historical = [price_14d_ago,price_7d_ago,price_1d_ago]
     end
 
     def show_connection_status
