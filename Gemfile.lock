@@ -1,34 +1,3 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@AshokkSS 
-AshokkSS
-/
-Crypto-CLI-Tool
-Public
-forked from Chillibean/Ruby-Track-Project
-Code
-Pull requests
-1
-Actions
-Projects
-Security
-Insights
-Settings
-Crypto-CLI-Tool/Gemfile.lock
-@AshokkSS
-AshokkSS CC-21 Complete
-…
-Latest commit 70c952e 7 days ago
- History
- 2 contributors
-@AshokkSS@ipc103
-97 lines (94 sloc)  1.99 KB
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -50,7 +19,6 @@ GEM
     i18n (0.8.1)
     json (2.6.2)
     method_source (0.8.2)
-    mini_portile2 (2.8.0)
     minitest (5.10.1)
     net-http (0.2.2)
       uri
@@ -73,7 +41,6 @@ GEM
       sinatra (>= 1.0)
     slop (3.6.0)
     sqlite3 (1.5.0)
-      mini_portile2 (~> 2.8.0)
     strings (0.2.1)
       strings-ansi (~> 0.2)
       unicode-display_width (>= 1.5, < 3.0)
@@ -100,6 +67,10 @@ GEM
       tty-screen (~> 0.8)
       wisper (~> 2.0)
     tty-screen (0.8.1)
+    tty-table (0.12.0)
+      pastel (~> 0.8)
+      strings (~> 0.2.0)
+      tty-screen (~> 0.8)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     unicode-display_width (2.3.0)
@@ -122,6 +93,7 @@ DEPENDENCIES
   tty-progressbar
   tty-prompt
   tty-screen
+  tty-table
   uri
 
 BUNDLED WITH

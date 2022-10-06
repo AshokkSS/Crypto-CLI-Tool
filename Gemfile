@@ -8,6 +8,7 @@ gem "tty-box"
 gem "tty-screen"
 gem "tty-prompt"
 gem "tty-progressbar"
+gem "tty-table"
 gem 'uri'
 gem 'net-http'
 gem 'json'
