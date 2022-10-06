@@ -32,7 +32,6 @@ class MainMenu
     def startup
         loading_menu
         @quit_loop = nil
-        show_logo
     end
 
     def get_user_input(result)
@@ -56,6 +55,7 @@ class MainMenu
     end
 
     def display_main_menu
+        show_logo
         $result = PROMPT.select("Please select an option below.", OPTIONS)
         get_user_input($result)
     end
