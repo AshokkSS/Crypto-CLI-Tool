@@ -35,5 +35,12 @@ RSpec.describe CryptoAPI do
             crypto_api.get_valid_currencies
             expect(crypto_api.valid_currencies).to contain_exactly('btc','eth','ltc')
         end
+        it 'On successful ping get_crypto_price should set price_check_values array with values' do
+            response = Net::HTTPSuccess.new(1.0, '200', 'OK')
+            expect_any_instance_of(Net::HTTP).to receive(:request) { response }
+            expect(response).to receive(:body) { '{"01coin":{"gbp":0.00021159,"gbp_market_cap":0.0,"gbp_24h_vol":1.0316177973047886,"gbp_24h_change":0.0011973487654536286}}' } 
+            crypto_api.get_crypto_price('01coin','gbp')
+            expect(crypto_api.price_check_values).to contain_exactly('01coin','gbp',0.00021159,'0.0','1.0316177973047886',0.0011973487654536286)
+        end
     end
 end
