@@ -6,5 +6,3 @@ menu.startup
 while !menu.quit_loop
     menu.display_main_menu
 end
-
-# CryptoAPI.new.get_historical_data
