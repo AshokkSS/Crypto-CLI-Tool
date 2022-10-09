@@ -49,7 +49,9 @@ class CryptoAPI
         mcap = parsed_json [crypto_input]["#{fiat_input}_market_cap"].to_s
         hr_vol = parsed_json [crypto_input]["#{fiat_input}_24h_vol"].to_s
         hr_change = parsed_json [crypto_input]["#{fiat_input}_24h_change"]
-        @price_check_values = [crypto_input, fiat_input,fiat_price, mcap, hr_vol, hr_change]
+        #puts [crypto_input, fiat_input,fiat_price, mcap, hr_vol, hr_change]
+        return [crypto_input, fiat_input,fiat_price, mcap, hr_vol, hr_change]
+        
     end
 
     def get_historical_data(crypto_input,fiat_input)
@@ -61,7 +63,7 @@ class CryptoAPI
         price_14d_ago = parsed_json["prices"][0][1]
         price_7d_ago = parsed_json["prices"][7][1]
         price_1d_ago = parsed_json["prices"][13][1]
-        @price_check_historical = [price_14d_ago,price_7d_ago,price_1d_ago]
+        return [price_14d_ago,price_7d_ago,price_1d_ago]
     end
 
     def show_connection_status
