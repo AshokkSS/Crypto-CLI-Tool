@@ -12,6 +12,8 @@ class PriceCheck
 
     def welcome_user
         puts "Welcome to Price Check!"
+        CRYPTOAPI.get_valid_coins
+        CRYPTOAPI.get_valid_currencies
         @loop = nil
     end
 
@@ -66,14 +68,13 @@ class PriceCheck
     end
 
     def get_crypto_input 
-        CRYPTOAPI.get_valid_coins
+        
         puts "Here you can enter the name of the Crypto you would like to price check: (Example: Bitcoin)"
         crypto_input = PROMPT.select("Please select an option below.", CRYPTOAPI.valid_coins, filter: true)
         return crypto_input
     end
 
     def get_fiat_input 
-        CRYPTOAPI.get_valid_currencies
         prompt = TTY::Prompt.new
         puts "Here you can enter the fiat currency you would like to use: (Example: GBP)"
         fiat_input = prompt.select("Please select an option below.", CRYPTOAPI.valid_currencies, filter: true)
