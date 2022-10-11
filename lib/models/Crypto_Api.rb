@@ -8,6 +8,8 @@ class CryptoAPI
     PING_URL = "https://api.coingecko.com/api/v3/ping"
     COIN_LIST_URL = 'https://api.coingecko.com/api/v3/coins/list'
     CURRENCY_LIST_URL = "https://api.coingecko.com/api/v3/simple/supported_vs_currencies"
+    PRICE_CHECK_URL = "https://api.coingecko.com/api/v3/simple/price?ids="
+    HISTORY_URL = "https://api.coingecko.com/api/v3/coins/"
     CLEAR = "\e[H\e[2J"
 
     def ping_api
@@ -37,8 +39,7 @@ class CryptoAPI
     end
 
     def get_crypto_price(crypto_input, fiat_input)
-        url = "https://api.coingecko.com/api/v3/simple/price?ids="
-        url << "#{crypto_input}&vs_currencies=#{fiat_input}&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true"
+        url = "#{PRICE_CHECK_URL}#{crypto_input}&vs_currencies=#{fiat_input}&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true"
         uri = URI(url)
         res = Net::HTTP.get_response(uri)
         parsed_json = JSON.parse(res.body)
@@ -46,20 +47,18 @@ class CryptoAPI
         mcap = parsed_json [crypto_input]["#{fiat_input}_market_cap"].to_s
         hr_vol = parsed_json [crypto_input]["#{fiat_input}_24h_vol"].to_s
         hr_change = parsed_json [crypto_input]["#{fiat_input}_24h_change"]
-        return [crypto_input, fiat_input,fiat_price, mcap, hr_vol, hr_change]
-        
+        [crypto_input, fiat_input,fiat_price, mcap, hr_vol, hr_change]
     end
 
     def get_historical_data(crypto_input,fiat_input)
-        url = "https://api.coingecko.com/api/v3/coins/"
-        url << "#{crypto_input}/market_chart?vs_currency=#{fiat_input}&days=14&interval=daily"
+        url = "#{HISTORY_URL}#{crypto_input}/market_chart?vs_currency=#{fiat_input}&days=14&interval=daily"
         uri = URI(url)
         res = Net::HTTP.get_response(uri)
         parsed_json = JSON.parse(res.body)
         price_14d_ago = parsed_json["prices"][0][1]
         price_7d_ago = parsed_json["prices"][7][1]
         price_1d_ago = parsed_json["prices"][13][1]
-        return [price_14d_ago,price_7d_ago,price_1d_ago]
+        [price_14d_ago,price_7d_ago,price_1d_ago]
     end
 
     def show_connection_status
