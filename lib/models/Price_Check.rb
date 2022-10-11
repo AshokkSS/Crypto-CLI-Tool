@@ -7,9 +7,13 @@ class PriceCheck
     CRYPTOAPI = CryptoAPI.new
     CLEAR = "\e[H\e[2J"
     PROMPT = TTY::Prompt.new
+    attr_reader :price_check_values
+    attr_reader :price_check_historical
 
     def welcome_user
         puts "Welcome to Price Check!"
+        CRYPTOAPI.get_valid_coins
+        CRYPTOAPI.get_valid_currencies
         @loop = nil
     end
 
@@ -21,22 +25,22 @@ class PriceCheck
             fiat_input = get_fiat_input
             puts CLEAR
             MainMenu.new.show_logo
-            CRYPTOAPI.get_crypto_price(crypto_input,fiat_input)
-            CRYPTOAPI.get_historical_data(crypto_input,fiat_input)
+            @price_check_values = CRYPTOAPI.get_crypto_price(crypto_input,fiat_input)
+            @price_check_historical = CRYPTOAPI.get_historical_data(crypto_input,fiat_input)
             calculate_historical_change(crypto_input,fiat_input)
         end
     end
 
     def calculate_historical_change(crypto_input,fiat_input)
-        current_price = CRYPTOAPI.price_check_values[2]
-        price_change_14d = ((current_price-CRYPTOAPI.price_check_historical[0])/CRYPTOAPI.price_check_historical[0])*100
-        price_change_7d = ((current_price-CRYPTOAPI.price_check_historical[1])/CRYPTOAPI.price_check_historical[0])*100
+        current_price = @price_check_values[2]
+        price_change_14d = ((current_price - @price_check_historical[0])/@price_check_historical[0])*100
+        price_change_7d = ((current_price - @price_check_historical[1])/@price_check_historical[0])*100
         display_table(crypto_input,fiat_input,price_change_7d,price_change_14d)
     end
 
     def display_table(crypto_input, fiat_input,price_change_7d,price_change_14d)
-        values = CRYPTOAPI.price_check_values
-        historical_values = CRYPTOAPI.price_check_historical
+        values = @price_check_values
+        historical_values = @price_check_historical
         puts "Showing Live stats for: #{(crypto_input).upcase} in #{(fiat_input).upcase}"
         values[5].positive? == true ? values [5] = "+#{values[5]}%".to_s.green : values [5] = "#{values[5]}%".to_s.red
         price_change_7d.positive? == true ? price_change_7d = "+#{price_change_7d}%".to_s.green : price_change_7d = "#{price_change_7d}%".to_s.red
@@ -64,14 +68,13 @@ class PriceCheck
     end
 
     def get_crypto_input 
-        CRYPTOAPI.get_valid_coins
+        
         puts "Here you can enter the name of the Crypto you would like to price check: (Example: Bitcoin)"
         crypto_input = PROMPT.select("Please select an option below.", CRYPTOAPI.valid_coins, filter: true)
         return crypto_input
     end
 
     def get_fiat_input 
-        CRYPTOAPI.get_valid_currencies
         prompt = TTY::Prompt.new
         puts "Here you can enter the fiat currency you would like to use: (Example: GBP)"
         fiat_input = prompt.select("Please select an option below.", CRYPTOAPI.valid_currencies, filter: true)

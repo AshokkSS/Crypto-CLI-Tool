@@ -44,6 +44,7 @@ class MainMenu
             PRICECHECK.display_mini_menu
         when "Compare_Cryptos"
             COMPARECRYPTO.welcome_user
+            COMPARECRYPTO.display_mini_menu
         when "My_Portfolio"
             MYPORTFOLIO.welcome_user
         end
