@@ -43,10 +43,10 @@ class CryptoAPI
         uri = URI(url)
         res = Net::HTTP.get_response(uri)
         parsed_json = JSON.parse(res.body)
-        fiat_price = parsed_json [crypto_input][fiat_input]
-        mcap = parsed_json [crypto_input]["#{fiat_input}_market_cap"].to_s
-        hr_vol = parsed_json [crypto_input]["#{fiat_input}_24h_vol"].to_s
-        hr_change = parsed_json [crypto_input]["#{fiat_input}_24h_change"]
+        fiat_price = parsed_json [crypto_input][fiat_input].round(3)
+        mcap = parsed_json [crypto_input]["#{fiat_input}_market_cap"].round(3)
+        hr_vol = parsed_json [crypto_input]["#{fiat_input}_24h_vol"].round(3).to_s
+        hr_change = parsed_json [crypto_input]["#{fiat_input}_24h_change"].round(3)
         [crypto_input, fiat_input,fiat_price, mcap, hr_vol, hr_change]
     end
 
@@ -55,9 +55,9 @@ class CryptoAPI
         uri = URI(url)
         res = Net::HTTP.get_response(uri)
         parsed_json = JSON.parse(res.body)
-        price_14d_ago = parsed_json["prices"][0][1]
-        price_7d_ago = parsed_json["prices"][7][1]
-        price_1d_ago = parsed_json["prices"][13][1]
+        price_14d_ago = parsed_json["prices"][0][1].round(3)
+        price_7d_ago = parsed_json["prices"][7][1].round(3)
+        price_1d_ago = parsed_json["prices"][13][1].round(3)
         [price_14d_ago,price_7d_ago,price_1d_ago]
     end
 
