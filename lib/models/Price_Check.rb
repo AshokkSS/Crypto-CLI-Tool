@@ -33,25 +33,26 @@ class PriceCheck
 
     def calculate_historical_change(crypto_input,fiat_input)
         current_price = @price_check_values[2]
-        price_change_14d = ((current_price - @price_check_historical[0])/@price_check_historical[0])*100
-        price_change_7d = ((current_price - @price_check_historical[1])/@price_check_historical[0])*100
+        price_change_14d = (((current_price - @price_check_historical[0])/@price_check_historical[0])*100).round(3)
+        price_change_7d = (((current_price - @price_check_historical[1])/@price_check_historical[0])*100).round(3)
         display_table(crypto_input,fiat_input,price_change_7d,price_change_14d)
     end
 
     def display_table(crypto_input, fiat_input,price_change_7d,price_change_14d)
         values = @price_check_values
         historical_values = @price_check_historical
-        puts "Showing Live stats for: #{(crypto_input).upcase} in #{(fiat_input).upcase}"
-        values[5].positive? == true ? values [5] = "+#{values[5]}%".to_s.green : values [5] = "#{values[5]}%".to_s.red
-        price_change_7d.positive? == true ? price_change_7d = "+#{price_change_7d}%".to_s.green : price_change_7d = "#{price_change_7d}%".to_s.red
-        price_change_14d.positive? == true ? price_change_14d = "+#{price_change_14d}%".to_s.green : price_change_14d = "#{price_change_14d}%".to_s.red
-        price_check_table = TTY::Table.new(["Price","Market Cap","24 Hours Volume","Price 1D Ago"," 1 Day Change","Price 7D Ago","7 Day Change","Price 14D Ago", "14 Day Change"], [[values[2],values[3],values[4],historical_values[2],values[5],historical_values[1],price_change_7d,historical_values[0],price_change_14d]])
-        puts price_check_table.render(:unicode,padding: [1,2,1,2])
-        values[0].upcase!
-        values[1].upcase!
-        puts "How much different amounts of #{values[0]} are worth:"
+        time2 = Time.now
+        puts "Showing Live stats for: #{(crypto_input).upcase} in #{(fiat_input).upcase} at #{time2.inspect}"
+        values[5].positive? == true ? values [5] = "▲ +#{values[5]}%".to_s.green : values [5] = "▼ #{values[5]}%".to_s.red
+        price_change_7d.positive? == true ? price_change_7d = "▲ +#{price_change_7d}%".to_s.green : price_change_7d = "▼ #{price_change_7d}%".to_s.red
+        price_change_14d.positive? == true ? price_change_14d = "▲ +#{price_change_14d}%".to_s.green : price_change_14d = "▼ #{price_change_14d}%".to_s.red
+        price_check_table = TTY::Table.new(["Coin","Price","Market Cap","24 Hours Volume","Price 1D Ago"," 1 Day Change","Price 7D Ago","7 Day Change","Price 14D Ago", "14 Day Change"], [[(crypto_input).upcase,values[2],values[3],values[4],historical_values[2],values[5],historical_values[1],price_change_7d,historical_values[0],price_change_14d]])
+        puts price_check_table.render(:unicode,padding: [0,1])
+        values[0].upcase
+        values[1].upcase
+        puts "How much different amounts of #{values[0].upcase} are worth:"
         multiplier_table = TTY::Table.new(["Number of Coins","Value"], [["1 #{values[0]}","#{values[2]} #{values[1]}"],["10 #{values[0]}'s","#{values[2]*10} #{values[1]}"],["100 #{values[0]}'s","#{values[2]*100} #{values[1]}"],["500 #{values[0]}'s","#{values[2]*500} #{values[1]}"],["1000 #{values[0]}'s","#{values[2]*1000} #{values[1]}"]])
-        puts multiplier_table.render(:unicode,padding: [1,2,1,2])
+        puts multiplier_table.render(:unicode,padding: [0,1])
         display_exit_options
     end
 
