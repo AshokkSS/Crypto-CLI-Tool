@@ -26,14 +26,14 @@ class CompareCrypto
         fiat_input = get_fiat_input
         puts CLEAR
         MainMenu.new.show_logo
-        crypto_inputs.each do |n|
-            set_crypto(n,fiat_input)
+        crypto_inputs.each do |crypto_input|
+            set_crypto(crypto_input,fiat_input)
         end
-        @crypto.each do |n|
-            calculate_historical_change(n[0][0],n[0][1],n[0],n[1])
+        @crypto.each do |crypto_element|
+            calculate_historical_change(crypto_element[0][0],crypto_element[0][1],crypto_element[0],crypto_element[1])
         end
-        time2 = Time.now
-        puts "Comparing #{crypto_inputs.length()} cryptos in #{fiat_input.upcase} at #{time2.inspect}"
+        live_time = Time.now
+        puts "Comparing #{crypto_inputs.length()} cryptos in #{fiat_input.upcase} at #{live_time.inspect}"
         puts @table.render(:unicode,padding: [0,1])
     end
 
